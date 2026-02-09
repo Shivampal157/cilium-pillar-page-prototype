@@ -16,18 +16,5 @@ graph TD
     DNAT -->|4. Packet Copy| PodA[Target Pod]
     
     style DNAT fill:#ff9999,stroke:#333,stroke-width:2px
-### 🟢 The eBPF Flow (Cilium Way)
 
-```mermaid
-sequenceDiagram
-    participant Packet
-    participant NIC as Network Interface
-    participant BPF as eBPF Map
-    participant Pod as Application Pod
 
-    Packet->>NIC: Arrives at Node
-    NIC->>BPF: Intercepted via XDP Hook
-    Note over BPF: Lightning Fast No Context Switch
-    Note over BPF: No IPTables Lookup
-    BPF->>Pod: Direct Socket Redirection
-    Pod-->>Packet: Response
