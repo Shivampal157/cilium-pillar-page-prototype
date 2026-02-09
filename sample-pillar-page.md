@@ -8,25 +8,20 @@ In traditional Kubernetes networking, packets travel through a complex maze of i
 ### 🔴 The "Traffic Hairpin" (Old Way)
 Notice how the packet bounces around unnecessarily:
 
-```mermaid
-graph TD
+[6:52 PM, 2/9/2026] ~:: graph TD
     User[User Request] -->|1. Hit Node IP| NIC[Network Interface]
     NIC -->|2. Kernel Interrupt| Kernel
-    Kernel -->|3. IPTables Lookup - Slow| DNAT[DNAT Rules]
+    Kernel -->|3. IPTables Lookup (Slow)| DNAT[DNAT Rules]
     DNAT -->|4. Packet Copy| PodA[Target Pod]
-    
+
     style DNAT fill:#ff9999,stroke:#333,stroke-width:2px
-
-
-sequenceDiagram
+[6:52 PM, 2/9/2026] ~:: sequenceDiagram
     participant Packet
     participant NIC as Network Interface
-    participant BPF as eBPF Map
+    participant BPF as Cilium eBPF
     participant Pod as Application Pod
 
     Packet->>NIC: Arrives at Node
     NIC->>BPF: Intercepted via XDP Hook
-    Note over BPF: Lightning Fast No Context Switch
-    Note over BPF: No IPTables Lookup
-    BPF->>Pod: Direct Socket Redirection
-    Pod-->>Packet: Response
+    Note over BPF: No iptables lookup<br/>No context switch
+    BPF->>Pod: Direct socket red
