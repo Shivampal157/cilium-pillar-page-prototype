@@ -12,8 +12,7 @@ Notice how the packet bounces around unnecessarily:
 graph TD
     User[User Request] -->|1. Hit Node IP| NIC[Network Interface]
     NIC -->|2. Kernel Interrupt| Kernel
-    Kernel -->|3. IPTables Lookup (Slow)| DNAT[DNAT Rules]
+    Kernel -->|3. IPTables Lookup - Slow| DNAT[DNAT Rules]
     DNAT -->|4. Packet Copy| PodA[Target Pod]
     
     style DNAT fill:#ff9999,stroke:#333,stroke-width:2px
-    style IPTables fill:#ff9999,stroke:#333,stroke-width:2px
